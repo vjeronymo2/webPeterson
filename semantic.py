@@ -47,6 +47,7 @@ class semantic:
         
 
     def similarity(self, query):
+        torch.cuda.empty_cache()
         queries_embeddings = self.__sentence_model.encode([query])
         distances = cdist(queries_embeddings, self.__sentence_embeddings_p, "cosine")
         self.matches = np.argsort(distances, axis=1)[0,:8]

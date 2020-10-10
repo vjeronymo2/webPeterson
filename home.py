@@ -14,14 +14,9 @@ app = Flask(__name__, template_folder='.', static_folder='')
 app.debug = True
 app.secret_key = 'Testing, attention please'
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/", methods=['GET'])
 def home():
-    if request.method == 'POST':
-        session['query'] = request.form['query']
-        session['query'] = request.form['query']
-        return redirect(url_for('home'))
-    else:
-        return render_template("index.html")
+    return render_template("index.html")
 
 @app.route("/query", methods=['GET'])
 def query():
