@@ -9,7 +9,7 @@ import pickle
 import glob
 from scipy.spatial.distance import cdist
 from itertools import accumulate, chain
-from transformers import AutoTokenizer, AutoModelForQuestionAnswering
+from transformers import AlbertTokenizer, AlbertForQuestionAnswering
 from sentence_transformers import SentenceTransformer
 import torch
 import re
@@ -26,9 +26,9 @@ def loadPickle(path):
 class semantic:
     def __init__(self):
         ''' PRE-LOAD NECESSARY DATA '''
-        self.__sentence_model = SentenceTransformer('distilbert-base-nli-stsb-mean-tokens')
-        self.__tokenizer = AutoTokenizer.from_pretrained("twmkn9/albert-base-v2-squad2")
-        self.__model = AutoModelForQuestionAnswering.from_pretrained("twmkn9/albert-base-v2-squad2")
+        self.__sentence_model = SentenceTransformer(os.path.join('models', 'sbert.net_models_distilbert-base-nli-stsb-mean-tokens'))
+        self.__tokenizer = AlbertTokenizer.from_pretrained(os.path.join('models', 'albert_t'))
+        self.__model = AlbertForQuestionAnswering.from_pretrained(os.path.join('models', 'albert_m'))
 
 
         # Read url file
@@ -103,7 +103,7 @@ class semantic:
             output = {'global_index': start_index + chunk_index -len(tokenized_question) - 2,
               'sentence': sentence, 'answer': answer, 'score': score}
             outputs.append(output)
-        outputs = sorted(outputs, key=lambda k: k['score'], reverse=True)[:3]
+        outputs = sorted(outputs, key=lambda k: k['score'], reverse=True)[:8]
         timestamps = self.getTimestamp(outputs)
         for timestamp, output in zip(timestamps, outputs):
             output['timestamp'] = (timestamp.hour * 60 + timestamp.minute) * 60 + timestamp.second
@@ -113,10 +113,12 @@ class semantic:
         segments = self.__subs[self.matches[0]]
         global_indexes = [output['global_index'] for output in outputs]
         global_index_no_punct = []
+        delete = self.__tokenizer
         window_size = 10
         tokenized_text_no_punct = np.array(self.__tokenizer.encode(re.sub("[^\w\d'\s]+",'',
                                       self.__tokenizer.decode(self.__tokenized_text)),
                                       add_special_tokens=False))
+        # tokenized_text_no_punct = tokenized_text_no_punct[tokenized_text_no_punct != 13]
         for index in np.array(global_indexes):
             # nearby variable is a sequence of words near the answer index
             if index < len(self.__tokenized_text)/2:
@@ -125,13 +127,19 @@ class semantic:
                 nearby = self.__tokenized_text[index - window_size: index+1]
             nearby = self.__tokenizer.encode(re.sub("[^\w\d'\s]+",'',self.__tokenizer.decode(nearby)),
                      add_special_tokens=False)
-            nearby = [i for i in nearby if i != 13]
             # Find where this order of words are located in the
             # https://stackoverflow.com/questions/45816229/how-to-get-the-index-of-a-list-items-in-another-list
-            mask = tokenized_text_no_punct[:-len(nearby)+1]==nearby[0]
-            mask[mask] = (view_as_windows(tokenized_text_no_punct,len(nearby))[mask]==
-                          nearby).all(1)
-            start = int(np.flatnonzero(mask)[:,None])
+            try:
+                mask = tokenized_text_no_punct[:-len(nearby)+1]==nearby[0]
+                mask[mask] = (view_as_windows(tokenized_text_no_punct,len(nearby))[mask]==
+                              nearby).all(1)
+                start = int(np.flatnonzero(mask)[:,None])
+            except:
+                nearby = [i for i in nearby if i != 13]
+                mask = tokenized_text_no_punct[:-len(nearby)+1]==nearby[0]
+                mask[mask] = (view_as_windows(tokenized_text_no_punct,len(nearby))[mask]==
+                              nearby).all(1)
+                start = int(np.flatnonzero(mask)[:,None])
             if index >= len(self.__tokenized_text)/2:
                 start = start + len(nearby) -1
             global_index_no_punct.append(start)

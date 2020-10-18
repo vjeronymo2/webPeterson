@@ -5,7 +5,7 @@ function onYouTubeIframeAPIReady() {
 		height: '288',
 		width: '512',
 		videoId: '',
-		  playerVars: { 'autoplay': 0, 'controls': 1, 'showinfo': 0, 'rel': 0 }             
+		  playerVars: { 'controls': 1, 'showinfo': 0, 'rel': 0 }             
 	  });
 }
 
@@ -102,10 +102,12 @@ $(function(){
 		}
 	});
 	
-	
-	
-	
-	
+	/*=========================================================================
+		Pause Video
+	=========================================================================*/
+	$('.section-toggle').click(() => {
+		player.pauseVideo();
+	})
 	/*=========================================================================
 		Contact Form
 	=========================================================================*/
@@ -121,6 +123,7 @@ $(function(){
 			$("#answer").children(":not(#player)").remove();
 			$("#player").hide()
 			$('#results').html("<h3>You may be interested in:</h3>");
+			player.pauseVideo();
 			var $this = $(this),
 			
 			//You can edit alerts here
@@ -172,7 +175,8 @@ $(function(){
 							data: question,
 							success: function (data){
 								data = $.parseJSON(data);
-								player.loadVideoById(videos[0].url);
+								player.cueVideoById(videos[0].url);
+								player.pauseVideo();
 								$('#player').show()
 								$('#answer').append('<h3>Highlights</h3>');
 								data.forEach((data1, i) => {

@@ -7,11 +7,11 @@ import json
 from semantic import semantic
 
 semantic = semantic()
-# videos = semantic.similarity('Sometimes I feel like screaming')
-# answers = semantic.ask('What is the meaning of life')
+# videos = semantic.similarity('personality traits differences') #differences
+# answers = semantic.ask('What is the biggest difference in personality between the sexes?')
 
 app = Flask(__name__, template_folder='.', static_folder='')
-app.debug = True
+app.debug = False
 app.secret_key = 'Testing, attention please'
 
 @app.route("/", methods=['GET'])
