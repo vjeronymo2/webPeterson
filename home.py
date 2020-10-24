@@ -7,7 +7,7 @@ import json
 from semantic import semantic
 
 semantic = semantic()
-# videos = semantic.similarity('personality traits differences') #differences
+# videos = semantic.similarity('personality traits differences analysis') #differences
 # answers = semantic.ask('What is the biggest difference in personality between the sexes?')
 
 app = Flask(__name__, template_folder='.', static_folder='')

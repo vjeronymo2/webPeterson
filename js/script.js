@@ -132,7 +132,7 @@ $(function(){
 				success: 
 				"<div class='form-group' >\
 				<div class='alert alert-success' role='alert'> \
-				<strong>Submitted!</strong> It can take up to 3 minutes to process.\
+				<strong>Submitted!</strong> It can take up to 2 minutes to process.\
 				</div>\
 				</div>",
 				
@@ -182,9 +182,9 @@ $(function(){
 								data.forEach((data1, i) => {
 									var timestamp = new Date(data1.timestamp * 1000);
 									var timeString = '';
-									if (data1.timestamp > 3600) timeString = timeString.concat(timestamp.getUTCHours()+':');
-									if (data1.timestamp > 60) timeString = timeString.concat(timestamp.getUTCMinutes()+':');
-									timeString = timeString.concat(timestamp.getUTCSeconds());
+									if (data1.timestamp > 3600) timeString = timeString.concat(("0" + timestamp.getUTCHours()).slice(-2)+':');
+									if (data1.timestamp > 60) timeString = timeString.concat(("0" + timestamp.getUTCMinutes()).slice(-2)+':');
+									timeString = timeString.concat(("0" + timestamp.getUTCSeconds()).slice(-2));
 									var para = document.createElement("div");
 									var answerString = '<a href="javascript:void(0);" class="time'+i+'"><h4>'+timeString+'</h4></a> ' + data1.sentence
 									answerString = answerString.replace(data1.answer,'<strong class="color">'+data1.answer+'</strong>')
