@@ -395,10 +395,10 @@
 									
 									<div class='skill' >
 										
-										<h4>JavaScript</h4>
+										<h4>Front-End</h4>
 										
 										<div class='bar' >
-											<div class='percent' style='width:60%;' ></div>
+											<div class='percent' style='width:55%;' ></div>
 										</div>
 										
 									</div>
@@ -1117,9 +1117,19 @@
 							<p>
 								Jordan B Peterson is a Canadian clinical psychologist and a professor of psychology who became very influential on the internet by spreading clear psychological and biological explanations of human behaviour and society, ideas of self-development and meaning, and controversial political stances. 
 							</p>
-							<p>
-								That said, <strong class='color'>I hope this service will be used to help people figure their lives through Jordan's insights</strong>, as they have helped me, becoming less nihilistic and more engaged. Additionally, I do not care about his political views, nor do I agree with everything he says.
+							<p style="padding-bottom: 13px;">
+								That said, <strong class='color'>I hope this <span style="color:rgb(255, 119, 56);font-weight: bold;">deep learning</span> semantic search service will be used to help people find specific content</strong> through his <a href="https://www.youtube.com/channel/UCL_f53ZEJxp8TtlOkHwMV9Q" target="_blank">youtube channel</a>, which has more than <strong class='color'>350</strong> videos of his lectures, interviews and debates.
 							</p>
+							<hr style="border: 0;
+							clear:both;
+							display:block;
+							width: 100%;               
+							background-color:#303F9F;
+							height: 1px;">
+							
+							<div class='section-header' style="padding-top: 13px;">
+								<h2><strong class='color'>Ask</strong> him</h2> 
+							</div>
 							<div class='row' >
 								
 								<div class='col-md-6' >
@@ -1129,8 +1139,9 @@
 										<form id='ask-form' data-toggle='validator' method='post' action='mail.php' >
 											
 											<div class='form-group' >
-												<h3><strong class='color'>Query:</strong></h3>
-												<p>Think the <strong class='color'>Query</strong> field as a <strong class='color'>Google search</strong> - you'll type things related to what you want to search for.</p>
+												<h3><strong class='color'>Keywords:</strong></h3>
+												<p>Type keywords of things related to what you're searching for to find the <strong class='color'>top 10</strong> videos.</p>
+												<p>Try "<u>personality trait success</u>"</p>
 												<input type='text' class='form-control' placeholder='personality traits agreeableness analysis' name='query' required>
 												<div class='help-block with-errors' ></div>
 											
@@ -1139,7 +1150,8 @@
 				
 											<div class='form-group' >
 												<h3><strong class='color'>Question:</strong></h3>
-												<p>Literally ask a <strong class='color'>question</strong>.</p>
+												<p>Literally ask a <strong class='color'>question</strong> to <strong class='color'>interrogate</strong> the best video.</p>
+												<p>Try "<u>What is the personality trait more linked to sucess?</u>"</p>
 												<input type='text' class='form-control' placeholder='What is the biggest difference in personality between the sexes?' name='question' required>
 												<div class='help-block with-errors' ></div>
 											
@@ -1148,7 +1160,7 @@
 											<div id='ask-form-result' ></div>
 											
 											<div class='form-group text-center' >
-												<button type='submit' class='btn-custom btn-color' >
+												<button id="btnSubmit" type='submit' class='btn-custom btn-color' >
 													Ask
 												</button>
 											</div>

@@ -41,6 +41,7 @@ body{
 	overflow:hidden;
 	font-family: Lora, serif;
 	background:#F0F0F0 !important;
+	zoom: 125%;
 }
 *{
 	font-family: inherit;

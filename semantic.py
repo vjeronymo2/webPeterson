@@ -26,10 +26,10 @@ def loadPickle(path):
 class semantic:
     def __init__(self):
         ''' PRE-LOAD NECESSARY DATA '''
-        print(os.path.join('models', 'sbert.net_models_distilbert-base-nli-stsb-mean-tokens'))
-        print(os.path.join('models', 'albert_t'))
-        print(os.path.join('models', 'albert_m'))
-        print(os.getcwd())
+        # print(os.path.join('models', 'sbert.net_models_distilbert-base-nli-stsb-mean-tokens'))
+        # print(os.path.join('models', 'albert_t'))
+        # print(os.path.join('models', 'albert_m'))
+        # print(os.getcwd())
         self.__sentence_model = SentenceTransformer(os.path.join('models', 'sbert.net_models_distilbert-base-nli-stsb-mean-tokens'))
         self.__tokenizer = AlbertTokenizer.from_pretrained(os.path.join('models', 'albert_t'))
         self.__model = AlbertForQuestionAnswering.from_pretrained(os.path.join('models', 'albert_m'))
@@ -51,6 +51,7 @@ class semantic:
         
 
     def similarity(self, query):
+        # Empty cache to avoid memory outage
         torch.cuda.empty_cache()
         queries_embeddings = self.__sentence_model.encode([query])
         # distances = cdist(queries_embeddings, self.__sentence_embeddings_p, "cosine")

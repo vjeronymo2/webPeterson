@@ -8,6 +8,20 @@ function onYouTubeIframeAPIReady() {
 		  playerVars: { 'controls': 1, 'showinfo': 0, 'rel': 0 }             
 	  });
 }
+var placeholders_query = ['personality traits agreeableness analysis', 'personality trait success'];
+var placeholders_question = ['What is the biggest difference in personality between the sexes?', 'What is the personality trait more linked to sucess?'];
+
+(function cycle() { 
+
+    var placeholder_query = placeholders_query.shift();
+    $("input[name='query']").attr('placeholder',placeholders_query);
+    placeholders_query.push(placeholder_query);
+    var placeholder_question = placeholders_question.shift();
+    $("input[name='question']").attr('placeholder',placeholders_question);
+    placeholders_question.push(placeholder_question);
+    setTimeout(cycle,10000);
+
+})();
 
 $(function(){
 	"use strict";
@@ -119,6 +133,7 @@ $(function(){
 		
 		if (!e.isDefaultPrevented()) {
 			// If there is no any error in validation then send the message
+			$("#btnSubmit").attr("disabled", true);
 			e.preventDefault();
 			$("#answer").children(":not(#player)").remove();
 			$("#player").hide()
@@ -168,7 +183,7 @@ $(function(){
 						$('#ask-form-result').html(alerts.success);
 						console.log(data);
 						
-						$('#ask-form').trigger('reset');
+						// $('#ask-form').trigger('reset');
 						$.ajax({
 							url: '/question',
 							type: 'get',
@@ -196,6 +211,7 @@ $(function(){
 									})
 								});
 								$('#ask-form-result').html(alerts.success);
+								$("#btnSubmit").attr("disabled", false);
 								console.log(data);
 						}
 					});
@@ -205,6 +221,7 @@ $(function(){
 				},
 				error: function(){
 					$('#ask-form-result').html(alerts.error);
+					$(".btn-custom .btn-color").attr("disabled", true);
 				}
 			});
 		}

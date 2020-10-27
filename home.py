@@ -2,11 +2,13 @@
 import os
 from flask import Flask, redirect, url_for, render_template, request, session
 import json
+from threading import Thread
 
 # Custom libs
 from semantic import semantic
 
-semantic = semantic()
+model = False
+# semantic = semantic()
 # videos = semantic.similarity('personality traits differences analysis') #differences
 # answers = semantic.ask('What is the biggest difference in personality between the sexes?')
 
@@ -16,33 +18,30 @@ app.secret_key = 'Testing, attention please'
 
 @app.route("/", methods=['GET'])
 def home():
+    def start_model():
+        global model
+        if not model:
+            model = semantic()
+    thread = Thread(target=start_model)
+    thread.start()
     return render_template("index.html")
 
 @app.route("/query", methods=['GET'])
 def query():
+    global model
+    if not model:
+        model = semantic()
     print(request.args)
     query = request.args.get('query')
-    videos = semantic.similarity(query)
+    videos = model.similarity(query)
     return json.dumps(videos)
 
 @app.route("/question", methods=['GET'])
 def question():
     print(request.args)
     question = request.args.get('question')
-    answers = semantic.ask(question)
+    answers = model.ask(question)
     return json.dumps(answers)
-
-@app.route("/aboutMe")
-def me():
-    return render_template("about.html")
-
-# @app.route('/test')
-# def result():
-#     if 'query' in session:
-#         query = session['query']
-#         return f"<h1>{query}</h1>"
-#     else:
-#         return 'Not found'
 
 
 if __name__ == "__main__":
