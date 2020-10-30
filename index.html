@@ -213,6 +213,9 @@
 											This is the first full stack, AI-driven, container-based, cloud-based project I did. Actually, it's the first full project I've ever done alone, so feel free to share your thoughts, critics, advices, bugs and funny results on my e-mail, LinkedIn or Reddit post.
 										</p>
 										<p>
+											I used two Natural Language Processing (NLP) models. The first one is to search for semantic similarity between the user's "keywords" and the 350+ videos' transcripts, and returns the top10 results. The second one is a QuestionAnswering model that extracts answers from top1 result according to the user's "question"
+										</p>
+										<p>
 											In the future I plan to make a "About the model" section to explain which models were used and how, but in the meanwhile, feel free connect to me on <a href="https://www.linkedin.com/in/vitor-jeronymo/">LinkedIn</a> and ask me.
 										</p>
 										
@@ -1141,7 +1144,7 @@
 											<div class='form-group' >
 												<h3><strong class='color'>Keywords:</strong></h3>
 												<p>Type keywords of things related to what you're searching for to find the <strong class='color'>top 10</strong> videos.</p>
-												<p>Try "<u>personality trait success</u>"</p>
+												<p>Try "<u>personality traits agreeableness analysis</u>"</p>
 												<input type='text' class='form-control' placeholder='personality traits agreeableness analysis' name='query' required>
 												<div class='help-block with-errors' ></div>
 											
@@ -1151,7 +1154,7 @@
 											<div class='form-group' >
 												<h3><strong class='color'>Question:</strong></h3>
 												<p>Literally ask a <strong class='color'>question</strong> to <strong class='color'>interrogate</strong> the best video.</p>
-												<p>Try "<u>What is the personality trait more linked to sucess?</u>"</p>
+												<p>Try "<u>What is the biggest difference in personality between the sexes</u>"</p>
 												<input type='text' class='form-control' placeholder='What is the biggest difference in personality between the sexes?' name='question' required>
 												<div class='help-block with-errors' ></div>
 											
@@ -1181,8 +1184,13 @@
 						</div>
 						
 					</div>
-					<div class='section-block ask-block' id='answer' style="margin-bottom: 40px;">
-						<div id="player" style='display:none'></div>
+					<div class='section-block ask-block' style="margin-bottom: 40px;">
+						<div class='row' >
+							<div class='col-md-6' id='answer'>
+							</div>
+							<div id="player" class='col-md-6' style='display:none; margin-top: 20px;'>
+							</div>
+						</div>
 					</div>
 					
 				</section>

@@ -136,8 +136,9 @@ $(function(){
 			$("#btnSubmit").attr("disabled", true);
 			e.preventDefault();
 			$("#answer").children(":not(#player)").remove();
-			$("#player").hide()
-			$('#results').html("<h3>You may be interested in:</h3>");
+			$("#player").hide();
+			$('#results').hide();
+			$('#results').html("<h3>Top 10 videos related to your Keywords:</h3>");
 			player.pauseVideo();
 			var $this = $(this),
 			
@@ -164,7 +165,7 @@ $(function(){
 			var query = form[0];
 			var question = form[1];
 			var videos;
-			$('#player').before('<h2>Best <strong class="color"> match</strong></h2>');
+			// $('#player').before('<h2>Best <strong class="color"> match</strong></h2>');
 				$.ajax({
 					
 					url: '/query',
@@ -177,6 +178,7 @@ $(function(){
 							var para = document.createElement("a");
 							para.innerHTML = "<p>"+data.title+"</p>";
 							para.href = "https://www.youtube.com/watch?v=" + data.url;
+							para.target = "_blank";
 							$('#results').append(para);
 						});
 						
@@ -193,7 +195,7 @@ $(function(){
 								player.cueVideoById(videos[0].url);
 								player.pauseVideo();
 								$('#player').show()
-								$('#answer').append('<h3>Highlights</h3>');
+								$('#answer').append('<h3>Answers and Timestamps from <strong class="color">best</strong> video</h3>');
 								data.forEach((data1, i) => {
 									var timestamp = new Date(data1.timestamp * 1000);
 									var timeString = '';
@@ -201,7 +203,7 @@ $(function(){
 									if (data1.timestamp > 60) timeString = timeString.concat(("0" + timestamp.getUTCMinutes()).slice(-2)+':');
 									timeString = timeString.concat(("0" + timestamp.getUTCSeconds()).slice(-2));
 									var para = document.createElement("div");
-									var answerString = '<a href="javascript:void(0);" class="time'+i+'"><h4>'+timeString+'</h4></a> ' + data1.sentence
+									var answerString = '<a href="javascript:void(0);" style="color:rgb(255, 119, 56);" class="time'+i+'"><h4>'+timeString+'</h4></a> ' + data1.sentence
 									answerString = answerString.replace(data1.answer,'<strong class="color">'+data1.answer+'</strong>')
 									para.innerHTML = answerString
 									player.seekTo(data1.timestamp, true);
@@ -211,6 +213,7 @@ $(function(){
 									})
 								});
 								$('#ask-form-result').html(alerts.success);
+								$('#results').show();
 								$("#btnSubmit").attr("disabled", false);
 								console.log(data);
 						}
