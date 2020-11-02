@@ -174,6 +174,7 @@ $(function(){
 					success: function(data){
 
 						videos = $.parseJSON(data);
+						question=question+'&url='+videos[0].url
 						videos.forEach((data) => {
 							var para = document.createElement("a");
 							para.innerHTML = "<p>"+data.title+"</p>";

@@ -8,12 +8,12 @@ from threading import Thread
 from semantic import semantic
 
 model = False
-semantic = semantic()
-videos = semantic.similarity('love meaning') #differences
-answers = semantic.ask('what is love?')
+# semantic = semantic()
+# videos = semantic.similarity('love meaning') #differences
+# answers = semantic.ask('what is love?')
 
 app = Flask(__name__, template_folder='.', static_folder='')
-app.debug = True
+app.debug = False
 app.secret_key = 'Testing, attention please'
 
 @app.route("/", methods=['GET'])
@@ -38,11 +38,15 @@ def query():
 
 @app.route("/question", methods=['GET'])
 def question():
+    global model
+    if not model:
+        model = semantic()
     print(request.args)
     question = request.args.get('question')
-    answers = model.ask(question)
+    url = request.args.get('url')
+    answers = model.ask(question,url)
     return json.dumps(answers)
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
+    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))

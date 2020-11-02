@@ -61,9 +61,10 @@ class semantic:
         
         return [{'url': self.urls[i], 'title': self.titles[i]} for i in self.matches]
     
-    def ask(self, question):
+    def ask(self, question, url):
         # This will add CLK and SEP tokens to the question
-        punctuated = self.__punctuateds[self.matches[0]]
+        best_video = self.urls.index(url)
+        punctuated = self.__punctuateds[best_video]
         tokenized_question = self.__tokenizer.encode(question, add_special_tokens=False)
         self.__tokenized_text = self.__tokenizer.encode(punctuated, add_special_tokens=False) 
         # The chunksize will depend on the number of tokens of your question
