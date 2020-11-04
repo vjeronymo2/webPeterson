@@ -63,6 +63,7 @@ class semantic:
     
     def ask(self, question, url):
         # This will add CLK and SEP tokens to the question
+        torch.cuda.empty_cache()
         best_video = self.urls.index(url)
         punctuated = self.__punctuateds[best_video]
         tokenized_question = self.__tokenizer.encode(question, add_special_tokens=False)
@@ -112,16 +113,15 @@ class semantic:
               'sentence': sentence, 'answer': answer, 'score': score}
             outputs.append(output)
         outputs = sorted(outputs, key=lambda k: k['score'], reverse=True)[:8]
-        timestamps = self.getTimestamp(outputs)
+        timestamps = self.getTimestamp(outputs, best_video)
         for timestamp, output in zip(timestamps, outputs):
             output['timestamp'] = (timestamp.hour * 60 + timestamp.minute) * 60 + timestamp.second
         return outputs
     
-    def getTimestamp(self, outputs):
-        segments = self.__subs[self.matches[0]]
+    def getTimestamp(self, outputs, best_video):
+        segments = self.__subs[best_video]
         global_indexes = [output['global_index'] for output in outputs]
         global_index_no_punct = []
-        delete = self.__tokenizer
         window_size = 10
         tokenized_text_no_punct = np.array(self.__tokenizer.encode(re.sub("[^\w\d'\s]+",'',
                                       self.__tokenizer.decode(self.__tokenized_text)),

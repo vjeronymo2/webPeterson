@@ -13,15 +13,17 @@ model = False
 # answers = semantic.ask('what is love?')
 
 app = Flask(__name__, template_folder='.', static_folder='')
-app.debug = False
+app.debug = True
 app.secret_key = 'Testing, attention please'
 
 @app.route("/", methods=['GET'])
 def home():
+    global model
     def start_model():
         global model
         if not model:
             model = semantic()
+            print("*********CREATED AT /********")
     thread = Thread(target=start_model)
     thread.start()
     return render_template("index.html")
@@ -31,6 +33,7 @@ def query():
     global model
     if not model:
         model = semantic()
+        print("*********CREATED AT /query********")
     print(request.args)
     query = request.args.get('query')
     videos = model.similarity(query)
@@ -41,6 +44,7 @@ def question():
     global model
     if not model:
         model = semantic()
+        print("*********CREATED AT /question********")
     print(request.args)
     question = request.args.get('question')
     url = request.args.get('url')
@@ -49,4 +53,4 @@ def question():
 
 
 if __name__ == "__main__":
-    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
+    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
